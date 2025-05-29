@@ -31,5 +31,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }} # Token de acesso fornecido pelo GitHub
-          publish_dir: ./dist # O diretório que o Vite gera após o build (geralmente 'dist')
+          publish_dir: dist # O diretório que o Vite gera após o build (geralmente 'dist')
           enable_jekyll: false # Desabilita o Jekyll se você não o estiver usando
