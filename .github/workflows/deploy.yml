@@ -1,0 +1,32 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Dispara o workflow em cada push para a branch 'main'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Usa o sistema operacional Ubuntu para rodar o job
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Clona seu repositório
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Você pode ajustar a versão do Node.js conforme necessário
+
+      - name: Install dependencies
+        run: npm install # Instala as dependências do seu projeto
+
+      - name: Build project
+        run: npm run build # Roda o comando de build do seu projeto Vite
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # Token de acesso fornecido pelo GitHub
+          publish_dir: ./dist # O diretório que o Vite gera após o build (geralmente 'dist')
+          enable_jekyll: false # Desabilita o Jekyll se você não o estiver usando
