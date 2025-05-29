@@ -1,3 +1,4 @@
+# .github/workflows/deploy.yml
 name: Deploy to GitHub Pages
 
 on:
@@ -5,10 +6,16 @@ on:
     branches:
       - main # Dispara o workflow em cada push para a branch 'main'
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest # Usa o sistema operacional Ubuntu para rodar o job
+# Configura as permissões para o token GITHUB_TOKEN
+# Necessário para actions/upload-pages-artifact e actions/deploy-pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
+jobs:
+  build:
+    runs-on: ubuntu-latest # Usa o sistema operacional Ubuntu para rodar o job
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4 # Clona seu repositório
@@ -17,9 +24,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24.1.0' # Você pode ajustar a versão do Node.js conforme necessário
-      
-      - name: Clear build directory
-        run: rm -rf dist # Remove o diretório de build anterior para evitar conflitos
 
       - name: Install dependencies
         run: npm install # Instala as dependências do seu projeto
@@ -27,9 +31,18 @@ jobs:
       - name: Build project
         run: npm run build # Roda o comando de build do seu projeto Vite
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # Token de acesso fornecido pelo GitHub
-          publish_dir: dist # O diretório que o Vite gera após o build (geralmente 'dist')
-          enable_jekyll: false # Desabilita o Jekyll se você não o estiver usando
+          path: 'dist' # O diretório que o Vite gera após o build (geralmente 'dist')
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build # Garante que este job só rode após o job 'build' terminar com sucesso
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # Ação oficial para deploy no GitHub Pages
