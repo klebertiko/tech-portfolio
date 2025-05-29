@@ -14,7 +14,7 @@ function App() {
         {/* Sidebar lateral esquerda alinhada com o header */}
         <aside className="w-56 min-w-[140px] bg-[#23272e] flex flex-col items-center py-8 shadow-md h-full">
           <Link
-            to="/one"
+            to="/tech-portfolio/one"
             className="mb-4 px-5 py-2 bg-green-600 text-white font-medium rounded-lg shadow hover:bg-green-700 transition duration-200 text-center w-full"
           >
             Go to Lesson 1
