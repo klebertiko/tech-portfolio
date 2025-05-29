@@ -7,7 +7,7 @@ function App() {
       {/* Modern header */}
       <header className="w-full bg-[#23272e] shadow-md py-6 px-4 md:px-8 flex items-center z-10">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#62aaff] tracking-tight">
-          Hello World!
+          Tech Portfolio do klebertiko
         </h1>
       </header>
       <div className="flex flex-1 min-h-0">
